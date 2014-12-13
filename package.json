@@ -1,7 +1,7 @@
 {
   "name": "kamailio-etcd-dispatcher",
   "preferGlobal": true,
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "Doug Smith <info@laboratoryb.org>",
   "description": "Watches etcd keys to update a kamailio dispatcher.list",
   "bin": {
