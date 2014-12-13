@@ -1,11 +1,11 @@
 {
   "name": "kamailio-etcd-dispatcher",
   "preferGlobal": true,
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Doug Smith <info@laboratoryb.org>",
   "description": "Watches etcd keys to update a kamailio dispatcher.list",
   "bin": {
-    "module-name": "./bin/etcd-dispatcher"
+    "etcd-dispatcher": "./bin/etcd-dispatcher"
   },
   "scripts": {
     "start": "node app.js"
