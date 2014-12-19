@@ -1,3 +1,4 @@
+module.exports = function() {
 /*
 
 Authored by: Doug Smith <info@laboratoryb.org>
@@ -112,3 +113,5 @@ Run an announcer like:
 		var dispatcher = new Dispatcher(log,opts,kamailio);	
 
 	}
+
+};
