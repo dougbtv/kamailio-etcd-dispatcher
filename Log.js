@@ -41,7 +41,7 @@ module.exports = function(opts) {
 
 	var bunyan = require('bunyan');
 	var log = bunyan.createLogger({
-		name: "bowline",
+		name: "kamailio-etcd-dispatcher",
 		streams: mystreams,
 	});
 
