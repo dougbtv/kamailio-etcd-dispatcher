@@ -8,7 +8,8 @@
     "etcd-dispatcher": "./bin/etcd-dispatcher"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "grunt nodeunit"
   },
   "main": "./app.js",
   "repository": {
@@ -29,5 +30,9 @@
     "nomnom": "*",
     "bunyan-prettystream": "*",
     "node-etcd": "*"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-nodeunit": "~0.4.1"
   }
 }
