@@ -61,38 +61,38 @@ var announcer_b;
 
 
 module.exports = {
-    setUp: function (callback) {
-        // console.log("!trace SETUP");
-        callback();
-    },
-    /*
-    tearDown: function (callback) {
-        // clean up
-        console.log("!trace TEARDOWN");
-        app.kill();
+	setUp: function (callback) {
+		// console.log("!trace SETUP");
 		callback();
-    },
-    */
-    ensureKamailioDir: function(test) {
+	},
+	/*
+	tearDown: function (callback) {
+		// clean up
+		console.log("!trace TEARDOWN");
+		app.kill();
+		callback();
+	},
+	*/
+	ensureKamailioDir: function(test) {
 
-    	var dirname = path.dirname(opts.listpath);
-    	fs.exists(dirname,function(exists){
-    		
-    		if (exists) {
-    			fs.stat(dirname,function(err,stat){
-	    			test.ok(stat.isDirectory(),"Kamailio path exists");
-	    			test.done();
-    			});
-    		} else {
-    			fs.mkdir(dirname,function(err){
-    				test.ok(!err,"Made kamailio path");
-    				test.done();
-    			});
-    		}
-    	});
-    },
-    truncateLogs: function(test) {
-    	var logfiles = ['/tmp/announcer_a.log','/tmp/announcer_b.log','/tmp/dispatcher.log'];
+		var dirname = path.dirname(opts.listpath);
+		fs.exists(dirname,function(exists){
+			
+			if (exists) {
+				fs.stat(dirname,function(err,stat){
+					test.ok(stat.isDirectory(),"Kamailio path exists");
+					test.done();
+				});
+			} else {
+				fs.mkdir(dirname,function(err){
+					test.ok(!err,"Made kamailio path");
+					test.done();
+				});
+			}
+		});
+	},
+	truncateLogs: function(test) {
+		var logfiles = ['/tmp/announcer_a.log','/tmp/announcer_b.log','/tmp/dispatcher.log'];
 		async.each(logfiles, function(file,callback){
 			fs.exists(file,function(exists){
 				if (exists) {
@@ -107,23 +107,23 @@ module.exports = {
 			test.ok(!err,"Truncated Logs");
 			test.done();
 		});
-    },
-    etcdalive: function(test) {
-    	alive.isalive(function(err){
-    		test.ok(!err,"etcd is alive");
-    		test.done();
-    	});
-    },
-    etcdremovekey: function(test) {
-    	etcd.del( opts.rootkey + "/", { recursive: true }, function(result){
-	    	test.ok(true, "Remove resulted: " + result);
-	    	test.done();
-    	});
-    },
-    bootDispatcher: function(test) {
-    	dispatcher = fork('./app.js',[,'--listpath',opts.listpath,'--logfile','/tmp/dispatcher.log']);
+	},
+	etcdalive: function(test) {
+		alive.isalive(function(err){
+			test.ok(!err,"etcd is alive");
+			test.done();
+		});
+	},
+	etcdremovekey: function(test) {
+		etcd.del( opts.rootkey + "/", { recursive: true }, function(result){
+			test.ok(true, "Remove resulted: " + result);
+			test.done();
+		});
+	},
+	bootDispatcher: function(test) {
+		dispatcher = fork('./app.js',[,'--listpath',opts.listpath,'--logfile','/tmp/dispatcher.log']);
 
-    	setTimeout(function(){
+		setTimeout(function(){
 			test.ok(dispatcher.connected, "Dispatcher booted.");
 			test.done();
 		},500);
