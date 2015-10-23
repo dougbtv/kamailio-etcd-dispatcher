@@ -27,7 +27,7 @@ module.exports = function(log,opts) {
 					callback(e);
 				}
 
-				console.log(version);
+				// console.log(version);
 				if (version.etcdserver.match(/\d\.\d\.\d/)) {
 					// Looks like we have a good version.
 					log.it('etcd_alive',{version: version});

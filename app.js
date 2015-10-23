@@ -79,12 +79,18 @@ var opts = require("nomnom")
 		default: 5000,
 		help: 'Time between heartbeat pulses [announce mode only] (in milliseconds)'
 	})
+	// --------------------------------------- Logging options.
+	.option('logdisable', {
+		abbr: 'h',
+		flag: true,
+		help: 'Disable logging (usually for unit testing)'
+	})
 	.parse();
 
 
 // Create a log object.
 var Log = require('./Log.js');
-var log = new Log();
+var log = new Log(opts);
 
 var Alive = require('./Alive.js');
 var alive = new Alive(log,opts);
