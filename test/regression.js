@@ -141,8 +141,11 @@ module.exports = {
 	},
 	inspectDispatcherList: function(test) {
 		fs.readFile('/tmp/dispatcher.log', 'utf8', function (err, data) {
-			console.log(data);
+			console.log(data + 'wtf?');
+			test.ok(data,'really? this works?');
+			test.done();
 		});
+		/*
 		fs.exists(opts.listpath,function(exists){
 			if (exists) {
 
@@ -166,7 +169,7 @@ module.exports = {
 			}
 
 		});
-
+		*/
 	},
 	spinDown: function(test){
 
