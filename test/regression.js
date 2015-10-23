@@ -140,6 +140,9 @@ module.exports = {
 
 	},
 	inspectDispatcherList: function(test) {
+		fs.readFile('/tmp/dispatcher.log', 'utf8', function (err, data) {
+			console.log(data);
+		});
 		fs.exists(opts.listpath,function(exists){
 			if (exists) {
 
