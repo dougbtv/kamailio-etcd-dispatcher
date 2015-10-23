@@ -30,6 +30,7 @@ docker run -d -v /usr/share/ca-certificates/:/etc/ssl/certs -p 4001:4001 -p 2380
 var fork = require('child_process').fork;
 var path = require('path');
 var fs = require('fs');
+var async = require('async');
 
 // Load options generally....
 var Options = require('../Options.js');
@@ -48,9 +49,16 @@ var log = new Log(opts);
 var Alive = require('../Alive.js');
 var alive = new Alive(log,opts);
 
-// Start up dispatcher.
+// And we'll talk etcd.
+var Etcd = require('node-etcd');
+var etcd = new Etcd(opts.etcdhost, opts.etcdport);
+
+// Set up child process params
+
 var dispatcher;
-dispatcher = fork('./app.js',[,'--listpath',opts.listpath,'--logfile','/tmp/dispatcher.log']);
+var announcer_a;
+var announcer_b;
+
 
 module.exports = {
     setUp: function (callback) {
@@ -83,20 +91,61 @@ module.exports = {
     		}
     	});
     },
+    truncateLogs: function(test) {
+    	var logfiles = ['/tmp/announcer_a.log','/tmp/announcer_b.log','/tmp/dispatcher.log'];
+		async.each(logfiles, function(file,callback){
+			fs.exists(file,function(exists){
+				if (exists) {
+					fs.truncate(file,0,function(err){
+						callback(err);
+					});
+				} else {
+					callback(false);
+				}
+			});
+		},function(err){
+			test.ok(!err,"Truncated Logs");
+			test.done();
+		});
+    },
     etcdalive: function(test) {
     	alive.isalive(function(err){
     		test.ok(!err,"etcd is alive");
     		test.done();
     	});
     },
+    etcdremovekey: function(test) {
+    	etcd.del( opts.rootkey + "/", { recursive: true }, function(result){
+	    	test.ok(true, "Remove resulted: " + result);
+	    	test.done();
+    	});
+    },
     bootDispatcher: function(test) {
+    	dispatcher = fork('./app.js',[,'--listpath',opts.listpath,'--logfile','/tmp/dispatcher.log']);
+
     	setTimeout(function(){
 			test.ok(dispatcher.connected, "Dispatcher booted.");
 			test.done();
 		},500);
 	},
-	testMethodExists: function(test){
-		test.ok(true,"This is a test for sure.");
+	bootAnnouncers: function(test) {
+		announcer_a = fork('./app.js',[,'--announce','--logfile','/tmp/announcer_a.log','--announceip','8.8.8.8','--weight','25']);
+		announcer_b = fork('./app.js',[,'--announce','--logfile','/tmp/announcer_b.log','--announceip','4.2.2.2']);
+
+		setTimeout(function(){
+			test.ok(announcer_a.connected, "Announcer A booted.");
+			test.ok(announcer_b.connected, "Announcer B booted.");
+			test.done();
+		},500);
+
+	},
+	spinDown: function(test){
+
+		dispatcher.kill('SIGHUP');
+		announcer_a.kill('SIGHUP');
+		announcer_b.kill('SIGHUP');
+		
+		test.ok(true,"Kill processes.");
 		test.done();
 	}
 
