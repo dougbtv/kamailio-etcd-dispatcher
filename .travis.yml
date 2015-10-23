@@ -16,6 +16,8 @@ before_install:
 #  - docker run carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec rake test"
 before_script:
   - npm install -g grunt-cli
+after_script:
+  -  tail -n +1 /tmp/*.log
 node_js:
   - "0.12"
   - "0.11"
