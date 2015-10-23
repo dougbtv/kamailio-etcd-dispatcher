@@ -140,14 +140,27 @@ module.exports = {
 
 	},
 	inspectDispatcherList: function(test) {
-		fs.readFile('/tmp/dispatcher.log', 'utf8', function (err, data) {
-			console.log(data + 'wtf?');
-			test.ok(data,'really? this works?');
-			test.done();
-		});
-		/*
-		fs.exists(opts.listpath,function(exists){
-			if (exists) {
+		
+		// Wait for file to exist...
+		var found = false;
+		var timeout = false;
+		var dstart = Date.now();
+		var max_time = 20000;
+		
+		while (!found && !timeout) {
+			found = fs.existsSync(opts.listpath);
+			
+			if (Date.now() > (dstart + max_time)) {
+				timeout = true;
+				test.ok(false,"Timed out, never found file");
+				test.done();
+			}
+			
+		}
+
+		if (found) {
+			// Wait a little for the file to finish writing...
+			setTimeout(function(){
 
 				fs.readFile(opts.listpath, 'utf8', function (err, data) {
 					if (err) throw err;
@@ -160,16 +173,11 @@ module.exports = {
 
 
 				});
-			
-			} else {
+				
+			},1500);
+		}
 
-				test.ok(false,"File must exist");
-				test.done();
 
-			}
-
-		});
-		*/
 	},
 	spinDown: function(test){
 
