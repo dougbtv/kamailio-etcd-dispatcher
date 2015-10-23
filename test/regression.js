@@ -126,7 +126,7 @@ module.exports = {
 		setTimeout(function(){
 			test.ok(dispatcher.connected, "Dispatcher booted.");
 			test.done();
-		},500);
+		},250);
 	},
 	bootAnnouncers: function(test) {
 		announcer_a = fork('./app.js',[,'--announce','--logfile','/tmp/announcer_a.log','--announceip','8.8.8.8','--weight','25']);
@@ -136,8 +136,21 @@ module.exports = {
 			test.ok(announcer_a.connected, "Announcer A booted.");
 			test.ok(announcer_b.connected, "Announcer B booted.");
 			test.done();
-		},500);
+		},250);
 
+	},
+	inspectDispatcherList: function(test) {
+		fs.readFile(opts.listpath, 'utf8', function (err, data) {
+			if (err) throw err;
+			
+			// console.log(data);
+
+			test.ok(data.match(/8\.8\.8\.8.+weight=25/),"Announcer A set in dispatcher.list");
+			test.ok(data.match(/4\.2\.2\.2.+weight=75/),"Announcer B set in dispatcher.list");
+			test.done();
+
+
+		});
 	},
 	spinDown: function(test){
 
