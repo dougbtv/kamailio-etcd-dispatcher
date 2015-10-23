@@ -29,9 +29,21 @@ docker run -d -v /usr/share/ca-certificates/:/etc/ssl/certs -p 4001:4001 -p 2380
 
 var fork = require('child_process').fork;
 
-// Start up app.
-var app;
-app = fork('./app.js',['--Fake','param']);
+var opts = {
+	etcdhost: '127.0.0.1',
+	etcdport: '4001',
+	logdisable: true,
+};
+
+var Log = require('../Log.js');
+var log = new Log(opts);
+
+var Alive = require('../Alive.js');
+var alive = new Alive(log,opts);
+
+// Start up dispatcher.
+var dispatcher;
+dispatcher = fork('./app.js',['--logdisable']);
 
 module.exports = {
     setUp: function (callback) {
@@ -46,9 +58,15 @@ module.exports = {
 		callback();
     },
     */
-    waitForServer: function(test) {
+    etcdalive: function(test) {
+    	alive.isalive(function(err){
+    		test.ok(!err,"etcd is alive");
+    		test.done();
+    	});
+    },
+    bootDispatcher: function(test) {
     	setTimeout(function(){
-			test.ok(true, "Wait for server to boot.");
+			test.ok(dispatcher.connected, "Dispatcher booted.");
 			test.done();
 		},500);
 	},
