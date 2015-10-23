@@ -60,9 +60,12 @@ module.exports = function() {
 	})
 	// --------------------------------------- Logging options.
 	.option('logdisable', {
-		abbr: 'h',
 		flag: true,
-		help: 'Disable logging (usually for unit testing)'
+		help: 'Disable logging (not always useful...)'
+	})
+	.option('logfile', {
+		default: false,
+		help: 'Log specifically to a file'
 	})
 	.parse();
 
