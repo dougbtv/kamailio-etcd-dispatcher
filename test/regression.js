@@ -28,6 +28,8 @@ docker run -d -v /usr/share/ca-certificates/:/etc/ssl/certs -p 4001:4001 -p 2380
 */
 
 var fork = require('child_process').fork;
+var path = require('path');
+var fs = require('fs');
 
 // Load options generally....
 var Options = require('../Options.js');
@@ -36,6 +38,7 @@ var opts = options.options;
 
 // Then set specifics we need here...
 opts.logdisable = true;
+opts.listpath = '/tmp/ked-test/dispatcher.list';
 
 // Create our logging option...
 var Log = require('../Log.js');
@@ -47,7 +50,7 @@ var alive = new Alive(log,opts);
 
 // Start up dispatcher.
 var dispatcher;
-dispatcher = fork('./app.js',['--logdisable']);
+dispatcher = fork('./app.js',[,'--listpath',opts.listpath,'--logfile','/tmp/dispatcher.log']);
 
 module.exports = {
     setUp: function (callback) {
@@ -62,6 +65,24 @@ module.exports = {
 		callback();
     },
     */
+    ensureKamailioDir: function(test) {
+
+    	var dirname = path.dirname(opts.listpath);
+    	fs.exists(dirname,function(exists){
+    		
+    		if (exists) {
+    			fs.stat(dirname,function(err,stat){
+	    			test.ok(stat.isDirectory(),"Kamailio path exists");
+	    			test.done();
+    			});
+    		} else {
+    			fs.mkdir(dirname,function(err){
+    				test.ok(!err,"Made kamailio path");
+    				test.done();
+    			});
+    		}
+    	});
+    },
     etcdalive: function(test) {
     	alive.isalive(function(err){
     		test.ok(!err,"etcd is alive");
