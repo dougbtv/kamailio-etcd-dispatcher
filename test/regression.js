@@ -29,15 +29,19 @@ docker run -d -v /usr/share/ca-certificates/:/etc/ssl/certs -p 4001:4001 -p 2380
 
 var fork = require('child_process').fork;
 
-var opts = {
-	etcdhost: '127.0.0.1',
-	etcdport: '4001',
-	logdisable: true,
-};
+// Load options generally....
+var Options = require('../Options.js');
+var options = new Options();
+var opts = options.options;
 
+// Then set specifics we need here...
+opts.logdisable = true;
+
+// Create our logging option...
 var Log = require('../Log.js');
 var log = new Log(opts);
 
+// Because we use it for alive....
 var Alive = require('../Alive.js');
 var alive = new Alive(log,opts);
 
