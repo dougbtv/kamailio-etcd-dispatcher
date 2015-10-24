@@ -1,4 +1,5 @@
 # kamailio-etcd-dispatcher
+[![Build Status](https://travis-ci.org/dougbtv/kamailio-etcd-dispatcher.svg?branch=master)](https://travis-ci.org/dougbtv/kamailio-etcd-dispatcher)
 
 Modifies a Kamailio dispatcher to have Kamailio act as a load balancer for machines discovered with etcd.
 
