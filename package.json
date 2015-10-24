@@ -1,7 +1,8 @@
 {
   "name": "kamailio-etcd-dispatcher",
   "preferGlobal": true,
-  "version": "0.2.3",
+  "version": "0.2.4",
+  "license": "MIT",
   "author": "Doug Smith <info@laboratoryb.org>",
   "description": "Watches etcd keys to update a kamailio dispatcher.list",
   "bin": {
