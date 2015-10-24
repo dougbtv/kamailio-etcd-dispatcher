@@ -50,3 +50,5 @@ Run an announcer like:
 ## More information
 
 Works in both "dispatcher" mode, which sits next to a Kamailio box and watches for Asterisk to announce itself. And in "announce" mode where it announces to Kamailio that it's available (and pulses heartbeats to it).
+
+Check out articles on dougbtv.com for more
