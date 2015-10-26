@@ -33,7 +33,7 @@ var fs = require('fs');
 var async = require('async');
 
 // Load options generally....
-var Options = require('../Options.js');
+var Options = require('../library/Options.js');
 var options = new Options();
 var opts = options.options;
 
@@ -42,11 +42,11 @@ opts.logdisable = true;
 opts.listpath = '/tmp/ked-test/dispatcher.list';
 
 // Create our logging option...
-var Log = require('../Log.js');
+var Log = require('../library/Log.js');
 var log = new Log(opts);
 
 // Because we use it for alive....
-var Alive = require('../Alive.js');
+var Alive = require('../library/Alive.js');
 var alive = new Alive(log,opts);
 
 // And we'll talk etcd.
@@ -121,7 +121,7 @@ module.exports = {
 		});
 	},
 	bootDispatcher: function(test) {
-		dispatcher = fork('./app.js',[,'--listpath',opts.listpath,'--logfile','/tmp/dispatcher.log']);
+		dispatcher = fork('./run.js',[,'--listpath',opts.listpath,'--logfile','/tmp/dispatcher.log']);
 
 		setTimeout(function(){
 			test.ok(dispatcher.connected, "Dispatcher booted.");
@@ -129,8 +129,8 @@ module.exports = {
 		},500);
 	},
 	bootAnnouncers: function(test) {
-		announcer_a = fork('./app.js',[,'--announce','--logfile','/tmp/announcer_a.log','--announceip','8.8.8.8','--weight','25']);
-		announcer_b = fork('./app.js',[,'--announce','--logfile','/tmp/announcer_b.log','--announceip','4.2.2.2']);
+		announcer_a = fork('./run.js',[,'--announce','--logfile','/tmp/announcer_a.log','--announceip','8.8.8.8','--weight','25']);
+		announcer_b = fork('./run.js',[,'--announce','--logfile','/tmp/announcer_b.log','--announceip','4.2.2.2']);
 
 		setTimeout(function(){
 			test.ok(announcer_a.connected, "Announcer A booted.");

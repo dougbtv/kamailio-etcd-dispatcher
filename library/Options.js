@@ -15,7 +15,7 @@ module.exports = function() {
 	.option('rootkey', {
 		abbr: 'r',
 		default: 'asterisk',
-		help: 'Set etcd root key to use'
+		help: 'Set etcd root key to use (use same key on matching announcers/dispatchers)'
 	})
 	// --------------------------------------- Dispatcher options.
 	.option('timeout', {
