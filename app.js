@@ -21,15 +21,15 @@ Run an announcer like:
 
 */
 
-var Options = require('./Options.js');
+var Options = require('./library/Options.js');
 var options = new Options();
 var opts = options.options;
 
 // Create a log object.
-var Log = require('./Log.js');
+var Log = require('./library/Log.js');
 var log = new Log(opts);
 
-var Alive = require('./Alive.js');
+var Alive = require('./library/Alive.js');
 var alive = new Alive(log,opts);
 
 // Check to see if etcd is alive...
@@ -49,17 +49,17 @@ alive.isalive(function(err){
 			}
 
 			// Instantiate our main app.
-			var Announcer = require('./Announcer.js');
+			var Announcer = require('./library/Announcer.js');
 			var announcer = new Announcer(log,opts);
 
 		} else {
 
 			// Create the Kamailio object (which writes dispatcher.list files)
-			var Kamailio = require('./Kamailio.js');
+			var Kamailio = require('./library/Kamailio.js');
 			var kamailio = new Kamailio(log,opts);
 
 			// Instantiate our main app.
-			var Dispatcher = require('./Dispatcher.js');
+			var Dispatcher = require('./library/Dispatcher.js');
 			var dispatcher = new Dispatcher(log,opts,kamailio);	
 
 		}

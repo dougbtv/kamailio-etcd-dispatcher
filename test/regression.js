@@ -33,7 +33,7 @@ var fs = require('fs');
 var async = require('async');
 
 // Load options generally....
-var Options = require('../Options.js');
+var Options = require('../library/Options.js');
 var options = new Options();
 var opts = options.options;
 
@@ -42,11 +42,11 @@ opts.logdisable = true;
 opts.listpath = '/tmp/ked-test/dispatcher.list';
 
 // Create our logging option...
-var Log = require('../Log.js');
+var Log = require('../library/Log.js');
 var log = new Log(opts);
 
 // Because we use it for alive....
-var Alive = require('../Alive.js');
+var Alive = require('../library/Alive.js');
 var alive = new Alive(log,opts);
 
 // And we'll talk etcd.
